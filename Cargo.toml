@@ -1,12 +1,13 @@
 [package]
-name = "xensieve-pyo"
+name = "xensieve-py"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [lib]
-name = "xensieve_pyo"
+name = "xensieve_py"
 crate-type = ["cdylib"]
 
 [dependencies]
 pyo3 = "0.20.0"
+xensieve = "0.3.0"
