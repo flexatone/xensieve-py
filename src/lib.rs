@@ -37,7 +37,7 @@ impl Sieve {
     //     Self{s: new}
     // }
 
-    // NOTE: this works but can be implemented on xensieve_rs
+    // NOTE: this works but should be implemented on xensieve_rs
     // fn __and__(&self, other: &Self) -> Self {
     //     let new: SieveRS = self.s.clone() & other.s.clone();
     //     Self{s: new}
