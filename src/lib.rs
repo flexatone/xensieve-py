@@ -22,15 +22,15 @@ impl Sieve {
         self.s.contains(v as i128)
     }
 
-    // fn __neg__(&self) -> Self {
-    //     let new: SieveRS = !self.s;
-    //     Self{s: new}
-    // }
+    fn __neg__(&self) -> Self {
+        let new: SieveRS = !self.s.clone();
+        Self{s: new}
+    }
 
-    // fn __xor__(&self, other: &Self) -> Self {
-    //     let new: SieveRS = self.s ^ other.s;
-    //     Self{s: new}
-    // }
+    fn __xor__(&self, other: &Self) -> Self {
+        let new: SieveRS = self.s.clone() ^ other.s.clone();
+        Self{s: new}
+    }
 
     // fn __or__(&self, other: &Self) -> Self {
     //     let new: SieveRS = self.s | other.s;
