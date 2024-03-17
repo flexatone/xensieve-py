@@ -77,5 +77,4 @@ mod tests {
         let s2 = s1.__invert__();
         assert_eq!(s2.__repr__(), "Sieve{!(3@2)}");
     }
-
 }
