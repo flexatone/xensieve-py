@@ -156,6 +156,56 @@ jobs:
       - name: Run tests
         run: cargo test --verbose
 
+  #-----------------------------------------------------------------------------
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        run: |
+          rustup install --no-self-update nightly && rustup default nightly
+          rustup component add llvm-tools-preview
+
+      - name: Configure cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry
+            target/
+          key: coverage-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Conditionally install grcov
+        run: |
+          if ! command -v grcov &> /dev/null
+          then
+            cargo install grcov
+          fi
+
+      - name: Build
+        env:
+          RUSTFLAGS: -Cinstrument-coverage
+        run: cargo build
+
+      - name: Test
+        env:
+          LLVM_PROFILE_FILE: grcov-%p-%m.profraw
+          RUSTFLAGS: -Cinstrument-coverage
+        run: cargo test
+
+      - name: Generate coverage
+        run: |
+          grcov . -s . --binary-path ./target/debug/ -t lcov --branch --ignore-not-existing --excl-line cov-excl-line -o coverage.lcov
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: abf0edb1-8bfc-4fd7-97a7-cef513975eae
+          files: coverage.lcov
+          slug: flexatone/xensieve-py
 
   #-----------------------------------------------------------------------------
   sdist:
