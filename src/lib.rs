@@ -23,7 +23,7 @@ impl Sieve {
         self.s.contains(v as i128)
     }
 
-    fn __neg__(&self) -> Self {
+    fn __invert__(&self) -> Self {
         let new: SieveRS = !self.s.clone();
         Self { s: new }
     }
@@ -70,4 +70,12 @@ mod tests {
         assert_eq!(s.__contains__(2), true);
         assert_eq!(s.__contains__(3), false);
     }
+
+    #[test]
+    fn test_sieve_invert_a() {
+        let s1 = Sieve::new("3@2".to_string());
+        let s2 = s1.__invert__();
+        assert_eq!(s2.__repr__(), "Sieve{!(3@2)}");
+    }
+
 }

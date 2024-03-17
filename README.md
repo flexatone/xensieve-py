@@ -23,6 +23,8 @@ Code: https://github.com/flexatone/xensieve-py
 
 # Rust Implementation
 
+The Python implementation is built with PyO3, which wraps the Rust core library `xensieve`.
+
 Code: https://github.com/flexatone/xensieve-rs
 
 Docs: https://docs.rs/xensieve
