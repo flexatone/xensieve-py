@@ -1,6 +1,5 @@
-use pyo3::prelude::*;
 use ::xensieve::Sieve as SieveRS;
-
+use pyo3::prelude::*;
 
 #[pyclass(frozen)]
 struct Sieve {
@@ -11,7 +10,9 @@ struct Sieve {
 impl Sieve {
     #[new]
     fn new(expr: String) -> Self {
-        Self{s: SieveRS::new(&expr)}
+        Self {
+            s: SieveRS::new(&expr),
+        }
     }
 
     fn __repr__(&self) -> String {
@@ -24,12 +25,12 @@ impl Sieve {
 
     fn __neg__(&self) -> Self {
         let new: SieveRS = !self.s.clone();
-        Self{s: new}
+        Self { s: new }
     }
 
     fn __xor__(&self, other: &Self) -> Self {
         let new: SieveRS = self.s.clone() ^ other.s.clone();
-        Self{s: new}
+        Self { s: new }
     }
 
     // fn __or__(&self, other: &Self) -> Self {
@@ -42,7 +43,6 @@ impl Sieve {
     //     let new: SieveRS = self.s.clone() & other.s.clone();
     //     Self{s: new}
     // }
-
 }
 
 /// A Python module implemented in Rust.
@@ -50,4 +50,24 @@ impl Sieve {
 fn xensieve(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<Sieve>()?;
     Ok(())
+}
+
+//------------------------------------------------------------------------------
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_sieve_new_a() {
+        let s = Sieve::new("3@2|7@4".to_string());
+        assert_eq!(s.__repr__(), "Sieve{3@2|7@4}");
+    }
+
+    #[test]
+    fn test_sieve_contains_a() {
+        let s = Sieve::new("3@2|7@4".to_string());
+        assert_eq!(s.__contains__(2), true);
+        assert_eq!(s.__contains__(3), false);
+    }
 }
