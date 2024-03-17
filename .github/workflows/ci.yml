@@ -15,15 +15,19 @@ permissions:
 jobs:
   #-----------------------------------------------------------------------------
   linux:
-    runs-on: ubuntu-latest
     strategy:
       matrix:
         target: [x86_64, x86, aarch64, armv7, s390x, ppc64le]
+
+    name: Build & Test / Linux / ${{ matrix.target }}
+    runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.10'
+
       - name: Build wheels
         uses: PyO3/maturin-action@v1
         with:
@@ -31,6 +35,7 @@ jobs:
           args: --release --out dist --find-interpreter
           sccache: 'true'
           manylinux: auto
+
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
@@ -62,10 +67,13 @@ jobs:
 
   #-----------------------------------------------------------------------------
   windows:
-    runs-on: windows-latest
     strategy:
       matrix:
         target: [x64, x86]
+
+    name: Build & Test / Windows / ${{ matrix.target }}
+    runs-on: windows-latest
+
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -94,10 +102,13 @@ jobs:
 
   #-----------------------------------------------------------------------------
   macos:
-    runs-on: macos-latest
     strategy:
       matrix:
         target: [x86_64, aarch64]
+
+    name: Build & Test / MacOS / ${{ matrix.target }}
+    runs-on: macos-latest
+
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -126,6 +137,8 @@ jobs:
   #-----------------------------------------------------------------------------
   sdist:
     runs-on: ubuntu-latest
+    name: Source Distribution
+
     steps:
       - uses: actions/checkout@v4
       - name: Build sdist
@@ -143,6 +156,7 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+
     if: "startsWith(github.ref, 'refs/tags/')"
     needs: [linux, windows, macos, sdist]
     steps:
