@@ -23,6 +23,7 @@ impl Sieve {
         self.s.contains(v as i128)
     }
 
+    //--------------------------------------------------------------------------
     fn __invert__(&self) -> Self {
         let new: SieveRS = !self.s.clone();
         Self { s: new }
@@ -33,16 +34,18 @@ impl Sieve {
         Self { s: new }
     }
 
-    // fn __or__(&self, other: &Self) -> Self {
-    //     let new: SieveRS = self.s | other.s;
-    //     Self{s: new}
-    // }
+    fn __or__(&self, other: &Self) -> Self {
+        let new: SieveRS = self.s.clone() | other.s.clone();
+        Self{s: new}
+    }
 
-    // NOTE: this works but should be implemented on xensieve_rs
-    // fn __and__(&self, other: &Self) -> Self {
-    //     let new: SieveRS = self.s.clone() & other.s.clone();
-    //     Self{s: new}
-    // }
+    fn __and__(&self, other: &Self) -> Self {
+        let new: SieveRS = self.s.clone() & other.s.clone();
+        Self{s: new}
+    }
+
+    //--------------------------------------------------------------------------
+
 }
 
 /// A Python module implemented in Rust.
@@ -76,5 +79,14 @@ mod tests {
         let s1 = Sieve::new("3@2".to_string());
         let s2 = s1.__invert__();
         assert_eq!(s2.__repr__(), "Sieve{!(3@2)}");
+    }
+
+    #[test]
+    fn test_sieve_xor_a() {
+        let s1 = Sieve::new("3@2".to_string());
+        let s2 = Sieve::new("5@1".to_string());
+
+        let s3 = s1.__xor__(&s2);
+        assert_eq!(s3.__repr__(), "Sieve{3@2^5@1}");
     }
 }
