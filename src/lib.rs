@@ -36,16 +36,15 @@ impl Sieve {
 
     fn __or__(&self, other: &Self) -> Self {
         let new: SieveRS = self.s.clone() | other.s.clone();
-        Self{s: new}
+        Self { s: new }
     }
 
     fn __and__(&self, other: &Self) -> Self {
         let new: SieveRS = self.s.clone() & other.s.clone();
-        Self{s: new}
+        Self { s: new }
     }
 
     //--------------------------------------------------------------------------
-
 }
 
 /// A Python module implemented in Rust.
